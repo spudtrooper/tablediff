@@ -9,10 +9,6 @@ A chrome extension diff the contents of cells in a table.
 
 [youtu.be/RVTlPF5FkKw](https://youtu.be/RVTlPF5FkKw)
 
-## Usage
-
-TODO
-
 ## Install
 
 Clone repo and install as an unpacked extension from the `chrome` directory.
