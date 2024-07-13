@@ -24,7 +24,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     console.log("diffType", diffType);
     const { data } = contentScriptData;
     const newContentScriptData = { ...contentScriptData, data: { ...data, diffType } };
-    chrome.tabs.sendMessage(tabId, newContentScriptData);
+    const resp = await chrome.tabs.sendMessage(tabId, newContentScriptData);
+    if (sendResponse) {
+      sendResponse(resp);
+    }
     return;
   }
 
@@ -34,6 +37,16 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     const diffType = await getDiffType();
     console.log("diffType", diffType);
     sendResponse({ diffType });
+    return;
+  }
+
+  if (action === "getHighlightedElementIds") {
+    let { tabId } = data;
+    if (!tabId) tabId = sender.tab.id;
+    const resp = await chrome.tabs.sendMessage(tabId, { action: "getHighlightedElementIds" });
+    console.log("resp", resp);
+    const { ids } = resp;
+    sendResponse({ ids });
     return;
   }
 

@@ -4,6 +4,7 @@ const main = (function () {
   const displayTdClassName = "display-td";
   const fakeClassName = "fake-class";
   const highlightedClassName = "highlighted";
+  const diffButtonClassName = "diff-button";
 
   const diff = (diffType, table, checkedIndicies) => {
     const trs = table.querySelectorAll("tr");
@@ -66,14 +67,15 @@ const main = (function () {
     });
   }
 
-  const highlightTable = (diffType, table) => {
+  const highlightTable = (index, diffType, table) => {
     const thead = table.querySelector("thead") || table.querySelector("tbody") || table;
     const tr = thead ? thead?.querySelector("tr") : undefined;
     if (!tr) {
       console.log("no tr", table);
+      return;
     };
     table.classList.add(highlightedClassName);
-    let ths = tr?.querySelectorAll("th");
+    let ths = tr.querySelectorAll("th");
     if (!ths || ths.length === 0) {
       ths = tr.querySelectorAll("td");
     }
@@ -88,6 +90,8 @@ const main = (function () {
       }).filter(Boolean);
     };
     const diffButton = createElement("button");
+    diffButton.classList.add(diffButtonClassName);
+    diffButton.id = `diff-button-${index}`;
     const renderDiffButton = () => {
       const checkedIndicies = findCheckedIndicies();
       const numChecked = checkedIndicies.length;
@@ -159,10 +163,10 @@ const main = (function () {
     // Find all tables, add a border around them, add checkboxes to each column and a diff button.
     const tables = document.querySelectorAll("table");
     console.log("have tables", tables.length);
-    tables.forEach((table) => {
+    tables.forEach((table, index) => {
       console.log("table", table);
       try {
-        highlightTable(diffType, table);
+        highlightTable(index, diffType, table);
       } catch (e) {
         console.error("error", table, e);
       }
@@ -196,6 +200,12 @@ const main = (function () {
     removeHighlighting();
   };
 
+  const getHighlightedElementIds = () => {
+    const els = document.querySelectorAll(`.${diffButtonClassName}`);
+    const ids = Array.from(els).map((el) => el.id);
+    return { ids };
+  };
+
   const main = () => {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       note("content handler", "message", message, "sender", sender);
@@ -208,6 +218,8 @@ const main = (function () {
         console.log("have diffType", diffType);
         reset();
         highlightTables(diffType);
+        const { ids } = getHighlightedElementIds();
+        sendResponse({ ids });
         return;
       }
 
@@ -218,6 +230,12 @@ const main = (function () {
 
       if (action === "reset") {
         reset();
+        return;
+      }
+
+      if (action === "getHighlightedElementIds") {
+        const { ids } = getHighlightedElementIds();
+        sendResponse({ ids });
         return;
       }
 
