@@ -8,6 +8,8 @@ A chrome extension diff the contents of cells in a table.
   <source src="media/tablediff.mov" type="video/mp4">
 </video>
 
+See the [video](./media/tablediff.mov)
+
 ## Usage
 
 TODO
