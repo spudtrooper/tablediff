@@ -1,0 +1,43 @@
+.highlighted {
+  border: 2px solid #FF0000 !important;
+}
+
+.added {
+  background: rgb(211, 248, 211);
+  color: rgb(2, 72, 2), 2);
+}
+
+.removed {
+  background: rgb(248, 187, 187);
+  color: rgb(104, 7, 7)
+}
+
+.same {
+  background: rgb(198, 234, 246);
+  color: rgb(33, 33, 41);
+}
+
+.diff-results {
+  padding: 1rem;
+  margin: 1rem;
+  vertical-align: top;
+  font-size: 1.2em;
+  background-color: #fff !important;
+}
+
+.diff-results.all-same {
+  border: 1px dashed darkblue;
+}
+
+.diff-results.all-added {
+  border: 1px dashed darkgreen;
+}
+
+.diff-results.all-removed {
+  border: 1px dashed darkred;
+  ;
+}
+
+.diff-results.mixed {
+  border: 1px dashed purple;
+}
