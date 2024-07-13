@@ -77,27 +77,76 @@ const main = (function () {
     if (!ths || ths.length === 0) {
       ths = tr.querySelectorAll("td");
     }
+
+
     const checkboxes = [];
+    const findCheckedIndicies = () => {
+      return checkboxes.map((checkbox, index) => {
+        if (checkbox.checked) {
+          return index;
+        }
+      }).filter(Boolean);
+    };
+    const diffButton = createElement("button");
+    const renderDiffButton = () => {
+      const checkedIndicies = findCheckedIndicies();
+      const numChecked = checkedIndicies.length;
+      if (numChecked == 2) {
+        diffButton.disabled = false;
+      } else {
+        diffButton.disabled = true;
+      }
+    };
+
+    const renderCheckboxes = () => {
+      const checkedIndicies = findCheckedIndicies();
+      const numChecked = checkedIndicies.length;
+      if (numChecked == 2) {
+        // Disable all non-checked checkboxes.
+        checkboxes.forEach((checkbox, index) => {
+          if (!checkedIndicies.includes(index)) {
+            checkbox.disabled = true;
+          }
+        });
+      } else {
+        // Enable all checkboxes.
+        checkboxes.forEach((checkbox) => {
+          checkbox.disabled = false;
+        });
+      }
+    };
+
+
     ths.forEach((th) => {
       const checkbox = createElement("input");
       checkbox.type = "checkbox";
       // th.appendChild(checkbox);
       th.insertBefore(checkbox, th.firstChild || th.querySelector("td"));
       checkboxes.push(checkbox);
+      // When checked or unchecked, toggle a border around the column.
+      checkbox.addEventListener("change", (e) => {
+        const index = Array.from(th.parentNode.children).indexOf(th);
+        const tds = table.querySelectorAll("td");
+        tds.forEach((td, i) => {
+          if (i % ths.length === index) {
+            td.classList.toggle("selected");
+          }
+        });
+        renderDiffButton();
+        renderCheckboxes();
+      });
     });
 
-    const diffButton = createElement("button");
     diffButton.innerText = "Diff";
     diffButton.addEventListener("click", (e) => {
       e.preventDefault();
-      const checkedIndicies = checkboxes.map((checkbox, index) => {
-        if (checkbox.checked) {
-          return index;
-        }
-      }).filter(Boolean);
-      diff(diffType, table, checkedIndicies); //, displayEls);
+      const checkedIndicies = findCheckedIndicies();
+      diff(diffType, table, checkedIndicies);
     });
     table.parentNode.insertBefore(diffButton, table);
+
+    renderDiffButton();
+    renderCheckboxes();
   }
 
   const createElement = (tag) => {
