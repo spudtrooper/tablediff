@@ -4,11 +4,10 @@ A chrome extension diff the contents of cells in a table.
 
 ## Example
 
-<video width="320" height="240" controls>
-  <source src="media/tablediff.mov" type="video/mp4">
-</video>
 
-See the [video](./media/tablediff.mov)
+[![Everything Is AWESOME](https://img.youtube.com/vi/RVTlPF5FkKw/0.jpg)](https://www.youtube.com/watch?v=RVTlPF5FkKw "Everything Is AWESOME")
+
+[youtu.be/RVTlPF5FkKw](https://youtu.be/RVTlPF5FkKw)
 
 ## Usage
 
