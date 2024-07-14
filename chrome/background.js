@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     console.log("diffType", diffType);
     sendResponse({ diffType });
     return true;
-  }
+  }./
 
   if (action === "getHighlightedElementIds") {
     let { tabId } = data;
