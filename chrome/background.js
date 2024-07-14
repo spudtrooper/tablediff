@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     if (sendResponse) {
       sendResponse(resp);
     }
-    return;
+    return true;
   }
 
   if (action === "getDiffType") {
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     const diffType = await getDiffType();
     console.log("diffType", diffType);
     sendResponse({ diffType });
-    return;
+    return true;
   }
 
   if (action === "getHighlightedElementIds") {
@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     console.log("resp", resp);
     const { ids } = resp;
     sendResponse({ ids });
-    return;
+    return true;
   }
 
   console.log("unhandled background handler", "message", message, "sender", sender);
